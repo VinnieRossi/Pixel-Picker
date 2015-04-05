@@ -13,6 +13,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         String thomas = "Great";
+        String vinnie = "SHUT THE FUCK UP";
         setContentView(R.layout.activity_main);
     }
 
