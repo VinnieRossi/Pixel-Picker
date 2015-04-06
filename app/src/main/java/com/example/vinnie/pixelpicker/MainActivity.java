@@ -14,6 +14,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         String thomas = "Great";
         String vinnie = "SHUT THE FUCK UP";
+        String Luis = "Fags";
         setContentView(R.layout.activity_main);
     }
 
