@@ -15,6 +15,7 @@ public class MainActivity extends ActionBarActivity {
         String thomas = "Great";
         String vinnie = "SHUT THE FUCK UP";
         String Luis = "Fags";
+        String josh = "am i doing it right? you just wanted me to write a string... but didn't specify where. i'm just going to assume this is where you wanted it.";
         setContentView(R.layout.activity_main);
     }
 
