@@ -16,6 +16,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".DoodleActivity"
+            android:label="@string/title_activity_doodle" >
+        </activity>
+        <activity
+            android:name=".LayoutGeneratorActivity"
+            android:label="@string/title_activity_layout_generator" >
+        </activity>
+        <activity
+            android:name=".ColorDropperActivity"
+            android:label="@string/title_activity_color_dropper" >
+        </activity>
     </application>
 
 </manifest>

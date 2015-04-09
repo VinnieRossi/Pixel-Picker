@@ -3,4 +3,7 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_doodle">DoodleActivity</string>
+    <string name="title_activity_layout_generator">LayoutGeneratorActivity</string>
+    <string name="title_activity_color_dropper">ColorDropperActivity</string>
 </resources>
