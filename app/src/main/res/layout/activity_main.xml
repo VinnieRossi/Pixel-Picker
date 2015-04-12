@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="Dropper"
         android:id="@+id/doodleButton"
-        android:onClick="handle"
+        android:onClick="handleStartColorDropper"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
