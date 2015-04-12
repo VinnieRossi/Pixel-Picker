@@ -51,7 +51,36 @@ public class MainActivity extends ActionBarActivity {
         });
     }
 
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+               super.onActivityResult(requestCode, resultCode, data);
 
+                      switch(requestCode) {
+                      case 0:
+                               if (resultCode == RESULT_OK) {
+                                       Uri selectedImage = data.getData();
+                                       String[] filePathColumn = {MediaStore.Images.Media.DATA};
+
+                                               Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                                      cursor.moveToFirst();
+
+                                               int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                                       String filePath = cursor.getString(columnIndex);
+                                       cursor.close();
+
+
+                                                       Bitmap yourSelectedImage = BitmapFactory.decodeFile(filePath);
+                                       imageView.setImageBitmap(yourSelectedImage);
+
+                                          }
+                           break;
+
+                               case 1:
+                               if (resultCode == RESULT_OK) {
+                                       Toast.makeText(this, "Image saved to: " + data.getData(), Toast.LENGTH_LONG).show();
+                                   }
+                            break;
+                   }
+    }
 
 
 

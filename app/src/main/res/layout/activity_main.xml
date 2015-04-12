@@ -1,24 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                tools:context=".MainActivity"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context=".MainActivity"
     android:id="@+id/main">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@+id/doodleButton" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -26,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="Dropper"
         android:id="@+id/doodleButton"
-        android:onClick="handleStartColorDropper"
+        android:onClick="handle"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -49,7 +38,18 @@
         android:layout_height="wrap_content"
         android:text="Take picture"
         android:id="@+id/cameraButton"
-        android:layout_below="@+id/imageView"
+        android:layout_alignParentBottom="true"
         android:layout_toLeftOf="@+id/doodleButton"
-        android:layout_toStartOf="@+id/doodleButton"/>
+        android:layout_toStartOf="@+id/doodleButton" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_above="@+id/galleryButton"
+        android:layout_alignRight="@+id/doodleButton"
+        android:layout_alignEnd="@+id/doodleButton"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
