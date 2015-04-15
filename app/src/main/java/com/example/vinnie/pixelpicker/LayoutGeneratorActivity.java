@@ -1,18 +1,78 @@
 package com.example.vinnie.pixelpicker;
 
-import android.support.v7.app.ActionBarActivity;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 public class LayoutGeneratorActivity extends ActionBarActivity {
+
+    RelativeLayout layout;
+    ImageView box1, box2, box3, box4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_layout_generator);
+
+        layout = (RelativeLayout) findViewById(R.id.relativelayout);
+        layout.setBackgroundColor(Color.parseColor("#50C878"));
+
+        box1 = (ImageView) findViewById(R.id.box1);
+        box2 = (ImageView) findViewById(R.id.box2);
+        box3 = (ImageView) findViewById(R.id.box3);
+        box4 = (ImageView) findViewById(R.id.box4);
+
+        getScheme("#50C878");
     }
+
+    public void getScheme(String hexValue) {
+
+        int r = Integer.parseInt(hexValue.substring(1, 3), 16);
+        int g = Integer.parseInt(hexValue.substring(3, 5), 16);
+        int b = Integer.parseInt(hexValue.substring(5, 7), 16);
+        float[] hsv = new float[3];
+        int color;
+
+        Color.RGBToHSV(r,g,b,hsv);
+        hsv[2] *= 0.8f;
+        color = Color.HSVToColor(hsv);
+        box1.setBackgroundColor(color);
+
+        hsv[2] *= 0.8f;
+        color = Color.HSVToColor(hsv);
+        box2.setBackgroundColor(color);
+
+        hsv[2] *= 0.8f;
+        color = Color.HSVToColor(hsv);
+        box3.setBackgroundColor(color);
+
+        hsv[2] *= 0.8f;
+        color = Color.HSVToColor(hsv);
+        box4.setBackgroundColor(color);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     @Override
