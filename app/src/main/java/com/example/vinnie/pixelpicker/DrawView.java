@@ -2,88 +2,115 @@ package com.example.vinnie.pixelpicker;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.AttributeSet;
-import android.view.View;
-import android.graphics.Path;
 import android.view.MotionEvent;
+import android.view.View;
+
+import java.util.ArrayList;
 
 
 /**
  * TODO: document your custom view class.
  */
+@SuppressWarnings("ALL")
 public class DrawView extends View {
+    private final int VIEW_ID = 555;
+    ArrayList<Path> paths = new ArrayList<>();
     private String mExampleString; // TODO: use a default from R.string...
     private int mExampleColor = Color.RED; // TODO: use a default from R.color...
     private float mExampleDimension = 0; // TODO: use a default from R.dimen...
     private Drawable mExampleDrawable;
-
     private TextPaint mTextPaint;
     private float mTextWidth;
     private float mTextHeight;
+    private Canvas drawCanvas;
+    private Bitmap canvasBitmap;
+    private Paint drawPaint = new Paint();
+    private Paint canvasPaint = new Paint();
 
-
-
-
-
-
-
-        private Paint paint = new Paint();
-        private Path path = new Path();
+    private Path path = new Path();
 
     public DrawView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        // this.setId(VIEW_ID);
 
-        paint.setAntiAlias(true);
-        paint.setStrokeWidth(5f);
-        paint.setColor(Color.BLACK);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeJoin(Paint.Join.ROUND);
+        setSaveEnabled(true);
+        drawPaint.setAntiAlias(true);
+        drawPaint.setStrokeWidth(10f);
+        drawPaint.setColor(Color.GREEN);
+        drawPaint.setStyle(Paint.Style.STROKE);
+        drawPaint.setStrokeJoin(Paint.Join.ROUND);
+        canvasPaint = new Paint(Paint.DITHER_FLAG);
     }
-
-        @Override
-        protected void onDraw(Canvas canvas) {
-            canvas.drawPath(path, paint);
-        }
-
-        @Override
-        public boolean onTouchEvent(MotionEvent event) {
-            // Get the coordinates of the touch event.
-            float eventX = event.getX();
-            float eventY = event.getY();
-
-            switch (event.getAction()) {
-                case MotionEvent.ACTION_DOWN:
-                    // Set a new starting point
-                    path.moveTo(eventX, eventY);
-                    return true;
-                case MotionEvent.ACTION_MOVE:
-                    // Connect the points
-                    path.lineTo(eventX, eventY);
-                    break;
-                default:
-                    return false;
-            }
-
-            // Makes our view repaint and call onDraw
-            invalidate();
-            return true;
-        }
 
     public DrawView(Context context) {
         super(context);
+        // this.setId(VIEW_ID);
+        setSaveEnabled(true);
         init(null, 0);
     }
 
-
     public DrawView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        //   this.setId(VIEW_ID);
+
+        setSaveEnabled(true);
         init(attrs, defStyle);
     }
+
+    public void changeColor(int color) {
+        invalidate();
+       drawPaint.setColor(color);
+
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        canvasBitmap = Bitmap.createBitmap(w,h,Bitmap.Config.ARGB_8888);
+        drawCanvas = new Canvas(canvasBitmap);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        canvas.drawBitmap(canvasBitmap,0,0,canvasPaint);
+        canvas.drawPath(path, drawPaint);
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // Get the coordinates of the touch event.
+        float eventX = event.getX();
+        float eventY = event.getY();
+
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                // Set a new starting point
+                path.moveTo(eventX, eventY);
+                return true;
+            case MotionEvent.ACTION_MOVE:
+                path.lineTo(eventX, eventY);
+                break;
+            case MotionEvent.ACTION_UP:
+                drawCanvas.drawPath(path,drawPaint);
+                path.reset();
+                break;
+            default:
+                return false;
+        }
+
+        // Makes our view repaint and call onDraw
+        invalidate();
+        return true;
+    }
+
 
     private void init(AttributeSet attrs, int defStyle) {
         // Load attributes
@@ -127,110 +154,5 @@ public class DrawView extends View {
         mTextHeight = fontMetrics.bottom;
     }
 
-//    @Override
-//    protected void onDraw(Canvas canvas) {
-//        super.onDraw(canvas);
-//
-//        // TODO: consider storing these as member variables to reduce
-//        // allocations per draw cycle.
-//        int paddingLeft = getPaddingLeft();
-//        int paddingTop = getPaddingTop();
-//        int paddingRight = getPaddingRight();
-//        int paddingBottom = getPaddingBottom();
-//
-//        int contentWidth = getWidth() - paddingLeft - paddingRight;
-//        int contentHeight = getHeight() - paddingTop - paddingBottom;
-//
-//        // Draw the text.
-//        canvas.drawText(mExampleString,
-//                paddingLeft + (contentWidth - mTextWidth) / 2,
-//                paddingTop + (contentHeight + mTextHeight) / 2,
-//                mTextPaint);
-//
-//        // Draw the example drawable on top of the text.
-//        if (mExampleDrawable != null) {
-//            mExampleDrawable.setBounds(paddingLeft, paddingTop,
-//                    paddingLeft + contentWidth, paddingTop + contentHeight);
-//            mExampleDrawable.draw(canvas);
-//        }
-//    }
 
-    /**
-     * Gets the example string attribute value.
-     *
-     * @return The example string attribute value.
-     */
-    public String getExampleString() {
-        return mExampleString;
-    }
-
-    /**
-     * Sets the view's example string attribute value. In the example view, this string
-     * is the text to draw.
-     *
-     * @param exampleString The example string attribute value to use.
-     */
-    public void setExampleString(String exampleString) {
-        mExampleString = exampleString;
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * Gets the example color attribute value.
-     *
-     * @return The example color attribute value.
-     */
-    public int getExampleColor() {
-        return mExampleColor;
-    }
-
-    /**
-     * Sets the view's example color attribute value. In the example view, this color
-     * is the font color.
-     *
-     * @param exampleColor The example color attribute value to use.
-     */
-    public void setExampleColor(int exampleColor) {
-        mExampleColor = exampleColor;
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * Gets the example dimension attribute value.
-     *
-     * @return The example dimension attribute value.
-     */
-    public float getExampleDimension() {
-        return mExampleDimension;
-    }
-
-    /**
-     * Sets the view's example dimension attribute value. In the example view, this dimension
-     * is the font size.
-     *
-     * @param exampleDimension The example dimension attribute value to use.
-     */
-    public void setExampleDimension(float exampleDimension) {
-        mExampleDimension = exampleDimension;
-        invalidateTextPaintAndMeasurements();
-    }
-
-    /**
-     * Gets the example drawable attribute value.
-     *
-     * @return The example drawable attribute value.
-     */
-    public Drawable getExampleDrawable() {
-        return mExampleDrawable;
-    }
-
-    /**
-     * Sets the view's example drawable attribute value. In the example view, this drawable is
-     * drawn above the text.
-     *
-     * @param exampleDrawable The example drawable attribute value to use.
-     */
-    public void setExampleDrawable(Drawable exampleDrawable) {
-        mExampleDrawable = exampleDrawable;
-    }
 }
