@@ -12,21 +12,23 @@ public class LayoutGeneratorActivity extends ActionBarActivity {
 
     RelativeLayout layout;
     ImageView box1, box2, box3, box4;
+    String hex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_layout_generator);
 
+        hex = getIntent().getExtras().getString("Hex");
         layout = (RelativeLayout) findViewById(R.id.relativelayout);
-        layout.setBackgroundColor(Color.parseColor("#50C878"));
+        layout.setBackgroundColor(Color.parseColor(hex));
 
         box1 = (ImageView) findViewById(R.id.box1);
         box2 = (ImageView) findViewById(R.id.box2);
         box3 = (ImageView) findViewById(R.id.box3);
         box4 = (ImageView) findViewById(R.id.box4);
 
-        getScheme("#50C878");
+        getScheme(hex);
     }
 
     public void getScheme(String hexValue) {
@@ -37,7 +39,7 @@ public class LayoutGeneratorActivity extends ActionBarActivity {
         float[] hsv = new float[3];
         int color;
 
-        Color.RGBToHSV(r,g,b,hsv);
+        Color.RGBToHSV(r, g, b, hsv);
         hsv[2] *= 0.8f;
         color = Color.HSVToColor(hsv);
         box1.setBackgroundColor(color);
@@ -54,26 +56,6 @@ public class LayoutGeneratorActivity extends ActionBarActivity {
         color = Color.HSVToColor(hsv);
         box4.setBackgroundColor(color);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

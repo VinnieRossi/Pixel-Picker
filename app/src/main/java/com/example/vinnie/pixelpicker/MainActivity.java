@@ -5,15 +5,17 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import java.io.ByteArrayOutputStream;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -22,6 +24,7 @@ public class MainActivity extends ActionBarActivity {
     private Button cameraButton;
     private ImageView imageView;
     private Uri fileUri;
+    Bitmap yourSelectedImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,36 +55,34 @@ public class MainActivity extends ActionBarActivity {
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-               super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
 
-                      switch(requestCode) {
-                      case 0:
-                               if (resultCode == RESULT_OK) {
-                                       Uri selectedImage = data.getData();
-                                       String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        switch (requestCode) {
+            case 0:
+                if (resultCode == RESULT_OK) {
+                    Uri selectedImage = data.getData();
+                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-                                               Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                                      cursor.moveToFirst();
+                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
+                    cursor.moveToFirst();
 
-                                               int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                                       String filePath = cursor.getString(columnIndex);
-                                       cursor.close();
+                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+                    String filePath = cursor.getString(columnIndex);
+                    cursor.close();
 
+                    yourSelectedImage = BitmapFactory.decodeFile(filePath);
+                    imageView.setImageBitmap(yourSelectedImage);
 
-                                                       Bitmap yourSelectedImage = BitmapFactory.decodeFile(filePath);
-                                       imageView.setImageBitmap(yourSelectedImage);
+                }
+                break;
 
-                                          }
-                           break;
-
-                               case 1:
-                               if (resultCode == RESULT_OK) {
-                                       Toast.makeText(this, "Image saved to: " + data.getData(), Toast.LENGTH_LONG).show();
-                                   }
-                            break;
-                   }
+            case 1:
+                if (resultCode == RESULT_OK) {
+                    Toast.makeText(this, "Image saved to: " + data.getData(), Toast.LENGTH_LONG).show();
+                }
+                break;
+        }
     }
-
 
 
     @Override
@@ -106,12 +107,21 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void handleStartColorDropper(View v){
-        Intent intent = new Intent(this,ColorDropperActivity.class);
-        // Bundle bundle = new Bundle();
-        // bundle.putStringArrayList("studentList", courses);
+    public void handleStartColorDropper(View v) {
+        Intent intent = new Intent(this, ColorDropperActivity.class);
+        //Bundle bundle = new Bundle();
+        //bundle.putStringArrayList("studentList", courses);
+        //intent.putExtras(bundle);
 
-        //  intent.putExtras(bundle);
-        startActivity(intent);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        if (yourSelectedImage != null) {
+            yourSelectedImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] byteArray = stream.toByteArray();
+            intent.putExtra("image", byteArray);
+            startActivity(intent);
+
+        } else {
+            Toast.makeText(this, "Select an image", Toast.LENGTH_SHORT).show();
+        }
     }
 }

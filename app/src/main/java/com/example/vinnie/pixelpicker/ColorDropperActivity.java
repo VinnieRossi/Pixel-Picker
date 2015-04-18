@@ -4,8 +4,8 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -24,23 +24,25 @@ public class ColorDropperActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color_dropper);
-        image = (ImageView)findViewById(R.id.image);
-        textBox = (TextView)findViewById(R.id.textBox);
+        image = (ImageView) findViewById(R.id.image);
+        textBox = (TextView) findViewById(R.id.textBox);
         //hexValue = "";
-        bitmap = BitmapFactory.decodeFile("/sdcard/CSC495Project1/tomClassEmail.png");
+        //bitmap = BitmapFactory.decodeFile("/sdcard/CSC495Project1/tomClassEmail.png");
+        byte[] byteArray = getIntent().getByteArrayExtra("image");
+        bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
         temp = "#000000";
 
+        textBox.setText(temp.toUpperCase());
         image.setImageBitmap(bitmap);
         //image.setBackgroundColor(Color.BLUE);
 
-        image.setOnTouchListener(new ImageView.OnTouchListener()
-        {
+        image.setOnTouchListener(new ImageView.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 float eventX = event.getX();
                 float eventY = event.getY();
-                //y must be < bitmap.height()
-                if (eventY < bitmap.getHeight() && eventX < bitmap.getWidth()) {
+                //keep in bounds of the image
+                if (eventY > 0 && eventY < bitmap.getHeight() && eventX > 0 && eventX < bitmap.getWidth()) {
                     int pixel = bitmap.getPixel((int) eventX, (int) eventY);
                     int red = Color.red(pixel);
                     int green = Color.green(pixel);
@@ -58,7 +60,6 @@ public class ColorDropperActivity extends ActionBarActivity {
                     } else temp += Integer.toHexString(blue);
 
                     textBox.setText(temp.toUpperCase());
-
                 }
                 return true;
             }
@@ -87,17 +88,20 @@ public class ColorDropperActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void handleStartDoodleClick(View v){
+
+    public void handleStartDoodleClick(View v) {
         Intent intent = new Intent(this, DoodleActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("color", temp);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 
-    public void handleStartLayoutClick(View v){
+    public void handleStartLayoutClick(View v) {
         Intent intent = new Intent(this, LayoutGeneratorActivity.class);
         Bundle bundle = new Bundle();
         bundle.putString("Hex", temp);
+        intent.putExtras(bundle);
         startActivity(intent);
     }
 }
