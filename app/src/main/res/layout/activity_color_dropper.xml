@@ -27,6 +27,7 @@
         android:id="@+id/image"
         android:clickable="true"
         android:scaleType="fitStart"
+        android:adjustViewBounds="true"
         android:layout_alignParentTop="true"
         android:layout_above="@+id/textBox" />
 
