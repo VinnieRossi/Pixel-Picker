@@ -10,9 +10,9 @@ import android.widget.RelativeLayout;
 
 public class LayoutGeneratorActivity extends ActionBarActivity {
 
-    RelativeLayout layout;
-    ImageView box1, box2, box3, box4;
-    String hex;
+    private RelativeLayout layout;
+    private ImageView box1, box2, box3, box4;
+    private String hex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
