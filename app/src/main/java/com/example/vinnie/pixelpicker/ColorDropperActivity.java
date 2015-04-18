@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +14,9 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import java.io.IOException;
 
 
 public class ColorDropperActivity extends ActionBarActivity {
@@ -26,11 +31,17 @@ public class ColorDropperActivity extends ActionBarActivity {
         setContentView(R.layout.activity_color_dropper);
         image = (ImageView) findViewById(R.id.image);
         textBox = (TextView) findViewById(R.id.textBox);
-        //hexValue = "";
-        //bitmap = BitmapFactory.decodeFile("/sdcard/CSC495Project1/tomClassEmail.png");
-        byte[] byteArray = getIntent().getByteArrayExtra("image");
-        bitmap = BitmapFactory.decodeByteArray(byteArray, 0, byteArray.length);
+
+        Intent intent = getIntent();
+        Uri selectedImage = Uri.parse(intent.getExtras().getString("selectedImage"));
+
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         temp = "#000000";
+
 
         textBox.setText(temp.toUpperCase());
         image.setImageBitmap(bitmap);

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -22,6 +23,7 @@ public class MainActivity extends ActionBarActivity {
 
     private Button galleryButton;
     private Button cameraButton;
+    private Button doodleButton;//remove
     private ImageView imageView;
     private Uri fileUri;
     Bitmap yourSelectedImage;
@@ -33,6 +35,8 @@ public class MainActivity extends ActionBarActivity {
 
         galleryButton = (Button) findViewById(R.id.galleryButton);
         cameraButton = (Button) findViewById(R.id.cameraButton);
+        doodleButton = (Button) findViewById(R.id.doodleButton);//remove
+
         imageView = (ImageView) findViewById(R.id.imageView);
 
         galleryButton.setOnClickListener(new View.OnClickListener() {
@@ -49,39 +53,40 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, 1);
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        doodleButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (fileUri != null) {
+                    Intent intent = new Intent(getBaseContext(), ColorDropperActivity.class);
+                    intent.putExtra("selectedImage", fileUri.toString());
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getBaseContext(), "Please select an image", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // Currently have no reason to handle specific cases
+        fileUri = data.getData();
+        String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-        switch (requestCode) {
-            case 0:
-                if (resultCode == RESULT_OK) {
-                    Uri selectedImage = data.getData();
-                    String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(fileUri, filePathColumn, null, null, null);
+        cursor.moveToFirst();
 
-                    Cursor cursor = getContentResolver().query(selectedImage, filePathColumn, null, null, null);
-                    cursor.moveToFirst();
+        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+        String filePath = cursor.getString(columnIndex);
+        cursor.close();
 
-                    int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-                    String filePath = cursor.getString(columnIndex);
-                    cursor.close();
-
-                    yourSelectedImage = BitmapFactory.decodeFile(filePath);
-                    imageView.setImageBitmap(yourSelectedImage);
-
-                }
-                break;
-
-            case 1:
-                if (resultCode == RESULT_OK) {
-                    Toast.makeText(this, "Image saved to: " + data.getData(), Toast.LENGTH_LONG).show();
-                }
-                break;
-        }
+        yourSelectedImage = BitmapFactory.decodeFile(filePath);
+        imageView.setImageBitmap(yourSelectedImage);
     }
 
 
@@ -107,6 +112,7 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /*
     public void handleStartColorDropper(View v) {
         Intent intent = new Intent(this, ColorDropperActivity.class);
         //Bundle bundle = new Bundle();
@@ -124,4 +130,6 @@ public class MainActivity extends ActionBarActivity {
             Toast.makeText(this, "Select an image", Toast.LENGTH_SHORT).show();
         }
     }
+    */
+
 }
