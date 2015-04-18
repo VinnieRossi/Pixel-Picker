@@ -23,7 +23,7 @@ public class MainActivity extends ActionBarActivity {
 
     private Button galleryButton;
     private Button cameraButton;
-    private Button doodleButton;//remove
+    private Button doodleButton;
     private ImageView imageView;
     private Uri fileUri;
     Bitmap yourSelectedImage;
@@ -35,7 +35,7 @@ public class MainActivity extends ActionBarActivity {
 
         galleryButton = (Button) findViewById(R.id.galleryButton);
         cameraButton = (Button) findViewById(R.id.cameraButton);
-        doodleButton = (Button) findViewById(R.id.doodleButton);//remove
+        doodleButton = (Button) findViewById(R.id.doodleButton);
 
         imageView = (ImageView) findViewById(R.id.imageView);
 
@@ -111,25 +111,4 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-    /*
-    public void handleStartColorDropper(View v) {
-        Intent intent = new Intent(this, ColorDropperActivity.class);
-        //Bundle bundle = new Bundle();
-        //bundle.putStringArrayList("studentList", courses);
-        //intent.putExtras(bundle);
-
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        if (yourSelectedImage != null) {
-            yourSelectedImage.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            byte[] byteArray = stream.toByteArray();
-            intent.putExtra("image", byteArray);
-            startActivity(intent);
-
-        } else {
-            Toast.makeText(this, "Select an image", Toast.LENGTH_SHORT).show();
-        }
-    }
-    */
-
 }
