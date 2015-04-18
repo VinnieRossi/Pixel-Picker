@@ -9,24 +9,24 @@
     tools:context="com.example.vinnie.pixelpicker.ColorDropperActivity">
 
     <ImageView
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:id="@+id/image"
         android:clickable="true"
+        android:scaleType="centerCrop"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginLeft="67dp"
-        android:layout_marginStart="67dp"
-        android:layout_marginTop="39dp" />
+        android:layout_above="@+id/textBox"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:text="New Text"
         android:id="@+id/textBox"
-        android:layout_marginTop="30dp"
-        android:layout_below="@+id/image"
+        android:layout_above="@+id/startLayout"
         android:layout_alignLeft="@+id/image"
         android:layout_alignStart="@+id/image" />
 
@@ -36,12 +36,11 @@
         android:text="Layout"
         android:id="@+id/startLayout"
         android:onClick="handleStartLayoutClick"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginLeft="34dp"
-        android:layout_marginStart="34dp"
-        android:layout_marginBottom="59dp" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"

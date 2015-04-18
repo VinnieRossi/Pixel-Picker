@@ -18,7 +18,7 @@ public class ColorDropperActivity extends ActionBarActivity {
     private ImageView image;
     private TextView textBox;
     private Bitmap bitmap;
-    // private String hexValue;
+    private String temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,8 @@ public class ColorDropperActivity extends ActionBarActivity {
         textBox = (TextView)findViewById(R.id.textBox);
         //hexValue = "";
         bitmap = BitmapFactory.decodeFile("/sdcard/CSC495Project1/tomClassEmail.png");
+        temp = "#000000";
+
         image.setImageBitmap(bitmap);
         //image.setBackgroundColor(Color.BLUE);
 
@@ -37,13 +39,27 @@ public class ColorDropperActivity extends ActionBarActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 float eventX = event.getX();
                 float eventY = event.getY();
-                int pixel = bitmap.getPixel( (int)eventX, (int)eventY);
-                int red = Color.red(pixel);
-                int green = Color.green(pixel);
-                int blue = Color.blue(pixel);
+                //y must be < bitmap.height()
+                if (eventY < bitmap.getHeight() && eventX < bitmap.getWidth()) {
+                    int pixel = bitmap.getPixel((int) eventX, (int) eventY);
+                    int red = Color.red(pixel);
+                    int green = Color.green(pixel);
+                    int blue = Color.blue(pixel);
+                    temp = "#";
+                    if (red < 16) {
+                        temp += "0" + Integer.toHexString(red);
+                    } else temp += Integer.toHexString(red);
 
-                String temp = "#" +  Integer.toHexString(red) +  Integer.toHexString(green) + Integer.toHexString(blue);
-                textBox.setText(temp.toUpperCase());
+                    if (green < 16) {
+                        temp += "0" + Integer.toHexString(green);
+                    } else temp += Integer.toHexString(green);
+                    if (blue < 16) {
+                        temp += "0" + Integer.toHexString(blue);
+                    } else temp += Integer.toHexString(blue);
+
+                    textBox.setText(temp.toUpperCase());
+
+                }
                 return true;
             }
         });
@@ -73,11 +89,15 @@ public class ColorDropperActivity extends ActionBarActivity {
     }
     public void handleStartDoodleClick(View v){
         Intent intent = new Intent(this, DoodleActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("color", temp);
         startActivity(intent);
     }
 
     public void handleStartLayoutClick(View v){
         Intent intent = new Intent(this, LayoutGeneratorActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("Hex", temp);
         startActivity(intent);
     }
 }
