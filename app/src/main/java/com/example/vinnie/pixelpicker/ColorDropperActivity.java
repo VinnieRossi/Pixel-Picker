@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,16 +22,19 @@ import java.io.IOException;
 
 public class ColorDropperActivity extends ActionBarActivity {
     private ImageView image;
-    private TextView textBox;
+    private EditText name;
     private Bitmap bitmap;
     private String temp;
+    private ImageView preview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_color_dropper);
         image = (ImageView) findViewById(R.id.image);
-        textBox = (TextView) findViewById(R.id.textBox);
+       // textBox = (TextView) findViewById(R.id.textBox);
+        preview = (ImageView)findViewById(R.id.imageView2);
+        name = (EditText)findViewById(R.id.editText);
 
         Intent intent = getIntent();
         Uri selectedImage = Uri.parse(intent.getExtras().getString("selectedImage"));
@@ -43,7 +47,7 @@ public class ColorDropperActivity extends ActionBarActivity {
         temp = "#000000";
 
 
-        textBox.setText(temp.toUpperCase());
+      //  textBox.setText(temp.toUpperCase());
         image.setImageBitmap(bitmap);
         //image.setBackgroundColor(Color.BLUE);
 
@@ -70,7 +74,8 @@ public class ColorDropperActivity extends ActionBarActivity {
                         temp += "0" + Integer.toHexString(blue);
                     } else temp += Integer.toHexString(blue);
 
-                    textBox.setText(temp.toUpperCase());
+                   // textBox.setText(temp.toUpperCase());
+                    preview.setBackgroundColor(Color.parseColor(temp));
                 }
                 return true;
             }
@@ -114,5 +119,9 @@ public class ColorDropperActivity extends ActionBarActivity {
         bundle.putString("Hex", temp);
         intent.putExtras(bundle);
         startActivity(intent);
+    }
+
+    public void handleSaveColorClick(View v){
+
     }
 }

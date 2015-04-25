@@ -21,25 +21,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />-->
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/image"
-        android:clickable="true"
-        android:scaleType="fitStart"
-        android:adjustViewBounds="true"
-        android:layout_alignParentTop="true"
-        android:layout_above="@+id/textBox" />
-
-
-    <TextView
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:text="New Text"
-        android:id="@+id/textBox"
-        android:layout_above="@+id/startLayout"
-        android:layout_alignLeft="@+id/image"
-        android:layout_alignStart="@+id/image" />
 
     <Button
         android:layout_width="wrap_content"
@@ -47,8 +28,6 @@
         android:text="Layout"
         android:id="@+id/startLayout"
         android:onClick="handleStartLayoutClick"
-        android:layout_marginLeft="40dp"
-        android:layout_marginStart="40dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -59,10 +38,45 @@
         android:text="Doodle"
         android:id="@+id/startDoodle"
         android:onClick="handleStartDoodleClick"
-        android:layout_marginRight="45dp"
-        android:layout_marginEnd="45dp"
-        android:layout_alignTop="@+id/startLayout"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <ImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:id="@+id/imageView2"
+        android:layout_alignRight="@+id/image"
+        android:layout_alignEnd="@+id/image"
+        android:layout_above="@+id/saveToColorBank" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Save Color"
+        android:onClick="handleSaveColorClick"
+        android:id="@+id/saveToColorBank"
+        android:layout_alignBottom="@+id/startLayout"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText"
+        android:layout_below="@+id/image"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/saveToColorBank"
+        android:layout_toStartOf="@+id/saveToColorBank" />
+
+    <ImageView
+        android:layout_width="350dp"
+        android:layout_height="430dp"
+        android:id="@+id/image"
+        android:clickable="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+ />
 </RelativeLayout>
 
