@@ -1,5 +1,7 @@
 package com.example.vinnie.pixelpicker;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -14,17 +16,20 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.io.IOException;
 
 
 public class ColorDropperActivity extends ActionBarActivity implements View.OnTouchListener {
     private ImageView imageView;
-    private EditText name;
+
     private Bitmap bitmap;
     private Bitmap scaled;
     private String hexValue;
     private ImageView preview;
+    private DataBaseHandler db;
+    private PickedColor newColor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +37,8 @@ public class ColorDropperActivity extends ActionBarActivity implements View.OnTo
         setContentView(R.layout.activity_color_dropper);
         imageView = (ImageView) findViewById(R.id.imageView);
         preview = (ImageView) findViewById(R.id.previewBox);
-        name = (EditText) findViewById(R.id.editText);
+
+        db = new DataBaseHandler(getApplicationContext());
 
         Intent intent = getIntent();
         Uri selectedImage = Uri.parse(intent.getExtras().getString("selectedImage"));
@@ -83,9 +89,6 @@ public class ColorDropperActivity extends ActionBarActivity implements View.OnTo
 
     public void handleStartDoodleClick(View v) {
         Intent intent = new Intent(this, DoodleActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putString("color", hexValue);
-        intent.putExtras(bundle);
         startActivity(intent);
     }
 
@@ -98,7 +101,32 @@ public class ColorDropperActivity extends ActionBarActivity implements View.OnTo
     }
 
     public void handleSaveColorClick(View v){
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
 
+        //alert.setTitle("Color");
+        alert.setMessage("What do you want to name this color?");
+
+// Set an EditText view to get user input
+        final EditText input = new EditText(this);
+        alert.setView(input);
+
+        alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String value = input.getText().toString();
+                newColor = new PickedColor(hexValue,value);
+                db.createColor(newColor);
+                Toast.makeText(getApplicationContext(),"Saved", Toast.LENGTH_SHORT).show();
+                // Do something with value!
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // Canceled.
+            }
+        });
+
+        alert.show();
     }
 
     @Override
