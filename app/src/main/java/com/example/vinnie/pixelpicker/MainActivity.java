@@ -71,19 +71,20 @@ public class MainActivity extends ActionBarActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        // Currently have no reason to handle specific cases
-        fileUri = data.getData();
-        String[] filePathColumn = {MediaStore.Images.Media.DATA};
+        if (resultCode == RESULT_OK) {
+            fileUri = data.getData();
+            String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
-        Cursor cursor = getContentResolver().query(fileUri, filePathColumn, null, null, null);
-        cursor.moveToFirst();
+            Cursor cursor = getContentResolver().query(fileUri, filePathColumn, null, null, null);
+            cursor.moveToFirst();
 
-        int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-        String filePath = cursor.getString(columnIndex);
-        cursor.close();
+            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
+            String filePath = cursor.getString(columnIndex);
+            cursor.close();
 
-        yourSelectedImage = BitmapFactory.decodeFile(filePath);
-        imageView.setImageBitmap(yourSelectedImage);
+            yourSelectedImage = BitmapFactory.decodeFile(filePath);
+            imageView.setImageBitmap(yourSelectedImage);
+        }
     }
 
 
