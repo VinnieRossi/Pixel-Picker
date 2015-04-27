@@ -106,14 +106,14 @@ public class ColorDropperActivity extends ActionBarActivity implements View.OnTo
         //alert.setTitle("Color");
         alert.setMessage("What do you want to name this color?");
 
-// Set an EditText view to get user input
+        // Set an EditText view to get user input
         final EditText input = new EditText(this);
         alert.setView(input);
 
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String value = input.getText().toString();
-                newColor = new PickedColor(hexValue,value);
+                newColor = new PickedColor(hexValue, value);
                 db.createColor(newColor);
                 Toast.makeText(getApplicationContext(),"Saved", Toast.LENGTH_SHORT).show();
                 // Do something with value!

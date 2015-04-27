@@ -19,6 +19,7 @@ public class DoodleActivity extends ActionBarActivity {
     DataBaseHandler db;
     ArrayList<PickedColor> colors;
     String pickedColor;
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,16 +28,14 @@ public class DoodleActivity extends ActionBarActivity {
         stuff = (DrawView) findViewById(R.id.drawView);
         db = new DataBaseHandler(getApplicationContext());
 
-         colors = db.getColors();
+        colors = db.getColors();
 
         ColorNames = new ArrayList<String>();
 
-        ListView listView = (ListView) findViewById(R.id.listView);
+        listView = (ListView) findViewById(R.id.listView);
         for(PickedColor s : colors){
             ColorNames.add(s.getCustomName());
         }
-
-
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,android.R.id.text1, ColorNames) {
             @Override
@@ -61,9 +60,19 @@ public class DoodleActivity extends ActionBarActivity {
 //                hsv[2] *= 114;
 //                //doesn't do fucking anything but make the text red
 //                color = Color.HSVToColor(hsv);
-//
 //                tv1.setTextColor(color);
 
+                // Dark background = White text and Light Background = Black text
+                int r = Integer.parseInt(hex.substring(1, 3), 16);
+                int g = Integer.parseInt(hex.substring(3, 5), 16);
+                int b = Integer.parseInt(hex.substring(5, 7), 16);
+
+                int c = Math.round((r * 299) + (b * 587) + (g * 114)) / 1000;
+                if (c > 125) {
+                    tv1.setTextColor(Color.BLACK);
+                } else {
+                    tv1.setTextColor(Color.WHITE);
+                }
 
                 view.setBackgroundColor(Color.parseColor(hex));
                 return view;
@@ -101,4 +110,9 @@ public class DoodleActivity extends ActionBarActivity {
         super.onResume();
     }
 
+    public void displayList(View view) {
+        if (listView.getVisibility() == View.VISIBLE) {
+            listView.setVisibility(View.INVISIBLE);
+        } else listView.setVisibility(View.VISIBLE);
+    }
 }
