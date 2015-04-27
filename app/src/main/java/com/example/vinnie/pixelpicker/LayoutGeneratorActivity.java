@@ -8,17 +8,17 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-public class LayoutGeneratorActivity extends ActionBarActivity {
+public class LayoutGeneratorActivity extends ActionBarActivity implements View.OnLongClickListener {
 
     private RelativeLayout layout;
-    private ImageView topLeft, topRight, botLeft, botRight;
-    private TextView topLeftVal, topRightVal, botLeftVal, botRightVal;
+    private Button topLeft, topRight, botLeft, botRight;
+    private int tl,tr,bl,br;
+    private int colorTL, colorTR, colorBL, colorBR;
     private String hex, colorToSave;
     private DataBaseHandler db;
 
@@ -28,22 +28,29 @@ public class LayoutGeneratorActivity extends ActionBarActivity {
         setContentView(R.layout.activity_layout_generator);
 
         db = new DataBaseHandler(getApplicationContext());
+        tl = tr = bl = br = 0;
 
         hex = getIntent().getExtras().getString("Hex");
         layout = (RelativeLayout) findViewById(R.id.relativelayout);
         layout.setBackgroundColor(Color.parseColor(hex));
 
-        topLeft = (ImageView) findViewById(R.id.top_left_box);
-        topRight = (ImageView) findViewById(R.id.top_right_box);
-        botLeft = (ImageView) findViewById(R.id.bottom_left_box);
-        botRight = (ImageView) findViewById(R.id.bottom_right_box);
+        topLeft = (Button) findViewById(R.id.top_left_box);
+        topRight = (Button) findViewById(R.id.top_right_box);
+        botLeft = (Button) findViewById(R.id.bottom_left_box);
+        botRight = (Button) findViewById(R.id.bottom_right_box);
 
-        topLeftVal = (TextView) findViewById(R.id.top_left_value);
-        topRightVal = (TextView) findViewById(R.id.top_right_value);
-        botLeftVal = (TextView) findViewById(R.id.bottom_left_value);
-        botRightVal = (TextView) findViewById(R.id.bottom_right_value);
+        topLeft.setOnLongClickListener(this);
+        topRight.setOnLongClickListener(this);
+        botLeft.setOnLongClickListener(this);
+        botRight.setOnLongClickListener(this);
 
         getScheme(hex);
+    }
+
+    @Override
+    public boolean onLongClick(View view) {
+        saveColor(view);
+        return true;
     }
 
     public void getScheme(String hexValue) {
@@ -52,28 +59,27 @@ public class LayoutGeneratorActivity extends ActionBarActivity {
         int g = Integer.parseInt(hexValue.substring(3, 5), 16);
         int b = Integer.parseInt(hexValue.substring(5, 7), 16);
         float[] hsv = new float[3];
-        int color;
 
         Color.RGBToHSV(r, g, b, hsv);
         hsv[2] *= 0.8f;
-        color = Color.HSVToColor(hsv);
-        topLeft.setBackgroundColor(color);
-        topLeftVal.setText(getRGB(color));
+        colorTL = Color.HSVToColor(hsv);
+        topLeft.setBackgroundColor(colorTL);
+        topLeft.setText(getRGB(colorTL));
 
         hsv[2] *= 0.8f;
-        color = Color.HSVToColor(hsv);
-        topRight.setBackgroundColor(color);
-        topRightVal.setText(getRGB(color));
+        colorTR = Color.HSVToColor(hsv);
+        topRight.setBackgroundColor(colorTR);
+        topRight.setText(getRGB(colorTR));
 
         hsv[2] *= 0.8f;
-        color = Color.HSVToColor(hsv);
-        botLeft.setBackgroundColor(color);
-        botLeftVal.setText(getRGB(color));
+        colorBL = Color.HSVToColor(hsv);
+        botLeft.setBackgroundColor(colorBL);
+        botLeft.setText(getRGB(colorBL));
 
         hsv[2] *= 0.8f;
-        color = Color.HSVToColor(hsv);
-        botRight.setBackgroundColor(color);
-        botRightVal.setText(getRGB(color));
+        colorBR = Color.HSVToColor(hsv);
+        botRight.setBackgroundColor(colorBR);
+        botRight.setText(getRGB(colorBR));
     }
 
     public String getRGB(int color) {
@@ -84,15 +90,16 @@ public class LayoutGeneratorActivity extends ActionBarActivity {
         // Dark background = White text and Light Background = Black text
         int c = Math.round((red * 299) + (blue * 587) + (green * 114)) / 1000;
         if (c > 125) {
-            topLeftVal.setTextColor(Color.BLACK);
-            topRightVal.setTextColor(Color.BLACK);
-            botLeftVal.setTextColor(Color.BLACK);
-            botRightVal.setTextColor(Color.BLACK);
+            topLeft.setTextColor(Color.BLACK);
+            topRight.setTextColor(Color.BLACK);
+            botLeft.setTextColor(Color.BLACK);
+            botRight.setTextColor(Color.BLACK);
+
         } else {
-            topLeftVal.setTextColor(Color.WHITE);
-            topRightVal.setTextColor(Color.WHITE);
-            botLeftVal.setTextColor(Color.WHITE);
-            botRightVal.setTextColor(Color.WHITE);
+            topLeft.setTextColor(Color.WHITE);
+            topRight.setTextColor(Color.WHITE);
+            botLeft.setTextColor(Color.WHITE);
+            botRight.setTextColor(Color.WHITE);
         }
 
         String hexValue = "#";
@@ -110,25 +117,53 @@ public class LayoutGeneratorActivity extends ActionBarActivity {
         return hexValue;
     }
 
-    public void hide(View view) {
-        if (view.getVisibility() == View.VISIBLE) {
-            view.setVisibility(View.INVISIBLE);
+    public void display(View view) {
+        if (view == topLeft) {
+            if (tl % 2 == 0) {
+                topLeft.setTextColor(colorTL);
+
+            } else {
+                topLeft.setTextColor(Color.WHITE);
+            }
+            tl++;
+        }
+
+        if (view == topRight) {
+            if (tr % 2 == 0) {
+                topRight.setTextColor(colorTR);
+
+            } else {
+                topRight.setTextColor(Color.WHITE);
+            }
+            tr++;
+        }
+
+        if (view == botLeft) {
+            if (bl % 2 == 0) {
+                botLeft.setTextColor(colorBL);
+
+            } else {
+                botLeft.setTextColor(Color.WHITE);
+            }
+            bl++;
+        }
+
+        if (view == botRight) {
+            if (br % 2 == 0) {
+                botRight.setTextColor(colorBR);
+
+            } else {
+                botRight.setTextColor(Color.WHITE);
+            }
+            br++;
         }
     }
 
-    public void show(View view) {
-        if (view == topLeft) topLeftVal.setVisibility(View.VISIBLE);
-        else if (view == topRight) topRightVal.setVisibility(View.VISIBLE);
-        else if (view == botLeft) botLeftVal.setVisibility(View.VISIBLE);
-        else if (view == botRight) botRightVal.setVisibility(View.VISIBLE);
-    }
-
-    // ******************************** implement save HERE ********************************
     public void saveColor(View view) {
-        if (view == findViewById(R.id.top_left_button)) colorToSave = topLeftVal.getText().toString();
-        else if (view == findViewById(R.id.top_right_button)) colorToSave = topRightVal.getText().toString();
-        else if (view == findViewById(R.id.bottom_left_button)) colorToSave = botLeftVal.getText().toString();
-        else if (view == findViewById(R.id.bottom_right_button)) colorToSave = botRightVal.getText().toString();
+        if (view == topLeft) colorToSave = topLeft.getText().toString();
+        else if (view == topRight) colorToSave = topRight.getText().toString();
+        else if (view == botLeft) colorToSave = botLeft.getText().toString();
+        else if (view == botRight) colorToSave = botRight.getText().toString();
 
         displayDialog();
     }

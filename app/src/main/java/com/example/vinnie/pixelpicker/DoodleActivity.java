@@ -109,10 +109,4 @@ public class DoodleActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
     }
-
-    public void displayList(View view) {
-        if (listView.getVisibility() == View.VISIBLE) {
-            listView.setVisibility(View.INVISIBLE);
-        } else listView.setVisibility(View.VISIBLE);
-    }
 }
