@@ -28,7 +28,7 @@ public class DoodleActivity extends ActionBarActivity {
         stuff = (DrawView) findViewById(R.id.drawView);
         db = new DataBaseHandler(getApplicationContext());
 
-        colors = db.getColors();
+        colors = db.getSortedColors();
 
         ColorNames = new ArrayList<String>();
 

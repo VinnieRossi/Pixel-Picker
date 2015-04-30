@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Color;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     //Color Table col names
     private static final String HEX_VALUE = "hex_code";
+    private static final String HEX_VALUE_INTEGER = "hex_value";
+
     private static final String CUSTOM_NAME = "customName";
 
 
@@ -32,7 +35,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     private static final String CREATE_TABLE_COLORS = "CREATE TABLE "
             + TABLE_COLORS + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
-            + HEX_VALUE + " TEXT," + CUSTOM_NAME + " TEXT"
+            + HEX_VALUE + " TEXT,"+ HEX_VALUE_INTEGER + " INTEGER,"
+            + CUSTOM_NAME + " TEXT"
             + ")";
 
 
@@ -66,6 +70,8 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
         ContentValues values = new ContentValues();
         values.put(HEX_VALUE, color.getHex());
+        values.put(HEX_VALUE_INTEGER, Color.parseColor(color.getHex()));
+
         values.put(CUSTOM_NAME, color.getCustomName());
         // values.put(KEY_COURSE_NAME, color.getCourseName());
 
@@ -87,6 +93,29 @@ public class DataBaseHandler extends SQLiteOpenHelper {
                 PickedColor color = new PickedColor();
                 color.setID(c.getInt((c.getColumnIndex(KEY_ID))));
                 color.setHex(c.getString(c.getColumnIndex(HEX_VALUE)));
+                color.setCustomName(c.getString(c.getColumnIndex(CUSTOM_NAME)));
+
+                colorList.add(color);
+            } while (c.moveToNext());
+        }
+        return colorList;
+
+    }
+
+    public ArrayList<PickedColor> getSortedColors() {
+        ArrayList<PickedColor> colorList = new ArrayList<PickedColor>();
+
+        String selectColor = "SELECT *fROM " + TABLE_COLORS + " ORDER BY "+HEX_VALUE_INTEGER
+                +" ASC";
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor c = db.rawQuery(selectColor, null);
+        if (c.moveToFirst()) {
+            do {
+                PickedColor color = new PickedColor();
+                color.setID(c.getInt((c.getColumnIndex(KEY_ID))));
+                color.setHex(c.getString(c.getColumnIndex(HEX_VALUE)));
+
                 color.setCustomName(c.getString(c.getColumnIndex(CUSTOM_NAME)));
 
                 colorList.add(color);
