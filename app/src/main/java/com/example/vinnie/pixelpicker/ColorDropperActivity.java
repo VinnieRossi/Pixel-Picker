@@ -16,6 +16,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class ColorDropperActivity extends ActionBarActivity implements View.OnTo
     private ImageView preview;
     private DataBaseHandler db;
     private PickedColor newColor;
+    private TextView displayHex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +39,7 @@ public class ColorDropperActivity extends ActionBarActivity implements View.OnTo
         setContentView(R.layout.activity_color_dropper);
         imageView = (ImageView) findViewById(R.id.imageView);
         preview = (ImageView) findViewById(R.id.previewBox);
+        displayHex = (TextView)findViewById(R.id.textView);
 
         db = new DataBaseHandler(getApplicationContext());
 
@@ -113,10 +116,16 @@ public class ColorDropperActivity extends ActionBarActivity implements View.OnTo
         alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int whichButton) {
                 String value = input.getText().toString();
-                newColor = new PickedColor(hexValue, value);
-                db.createColor(newColor);
-                Toast.makeText(getApplicationContext(),"Saved", Toast.LENGTH_SHORT).show();
-                // Do something with value!
+                if(value.equals("")) {
+                    Toast.makeText(getApplicationContext(), "Enter a name before hitting enter.", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    newColor = new PickedColor(hexValue, value);
+                    db.createColor(newColor);
+                    Toast.makeText(getApplicationContext(),"Saved", Toast.LENGTH_SHORT).show();
+
+                }
+
             }
         });
 
@@ -153,6 +162,7 @@ public class ColorDropperActivity extends ActionBarActivity implements View.OnTo
             } else hexValue += Integer.toHexString(blue);
 
             preview.setBackgroundColor(Color.parseColor(hexValue));
+            displayHex.setText(hexValue.toString());
         }
         return true;
     }
