@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.util.Log;
-
 import java.util.ArrayList;
 
 /**
@@ -30,16 +29,11 @@ public class DataBaseHandler extends SQLiteOpenHelper {
 
     private static final String CUSTOM_NAME = "customName";
 
-
-
-
     private static final String CREATE_TABLE_COLORS = "CREATE TABLE "
             + TABLE_COLORS + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
             + HEX_VALUE + " TEXT,"+ HEX_VALUE_INTEGER + " INTEGER,"
             + CUSTOM_NAME + " TEXT"
             + ")";
-
-
 
     public DataBaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -61,8 +55,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_COLORS);
         onCreate(db);
     }
-
-
 
     /*------------------------------------------------------------Color methods -------------------*/
     public long createColor(PickedColor color) {
@@ -99,7 +91,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
             } while (c.moveToNext());
         }
         return colorList;
-
     }
 
     public ArrayList<PickedColor> getSortedColors() {
@@ -122,7 +113,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
             } while (c.moveToNext());
         }
         return colorList;
-
     }
 
     public PickedColor getColorByID(long studentID) {
@@ -147,7 +137,6 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         return color;
     }
 
-
     public int updateColorData(PickedColor color) {
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -158,6 +147,4 @@ public class DataBaseHandler extends SQLiteOpenHelper {
         return db.update(TABLE_COLORS, values, KEY_ID + " = ?",
                 new String[]{String.valueOf(color.getID())});
     }
-
-
 }

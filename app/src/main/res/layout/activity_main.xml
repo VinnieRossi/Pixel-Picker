@@ -1,4 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,7 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Dropper"
-        android:id="@+id/doodleButton"
+        android:id="@+id/dropperButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -29,7 +31,7 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_toLeftOf="@+id/cameraButton"
-        android:layout_toStartOf="@+id/cameraButton"/>
+        android:layout_toStartOf="@+id/cameraButton" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
@@ -38,17 +40,18 @@
         android:text="Take picture"
         android:id="@+id/cameraButton"
         android:layout_alignParentBottom="true"
-        android:layout_toLeftOf="@+id/doodleButton"
-        android:layout_toStartOf="@+id/doodleButton" />
+        android:layout_toLeftOf="@+id/dropperButton"
+        android:layout_toStartOf="@+id/dropperButton" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:layout_above="@+id/galleryButton"
-        android:layout_alignRight="@+id/doodleButton"
-        android:layout_alignEnd="@+id/doodleButton"
+        android:layout_alignRight="@+id/dropperButton"
+        android:layout_alignEnd="@+id/dropperButton"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
 </RelativeLayout>

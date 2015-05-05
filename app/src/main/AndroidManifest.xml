@@ -10,6 +10,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -20,17 +21,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".DoodleActivity"
-            android:label="@string/title_activity_doodle" >
+            android:name=".PageViewActivity"
+            android:label="Page View Activity" >
         </activity>
-        <activity
-            android:name=".LayoutGeneratorActivity"
-            android:label="@string/title_activity_layout_generator" >
-        </activity>
-        <activity
-            android:name=".ColorDropperActivity"
-            android:label="@string/title_activity_color_dropper" >
-        </activity>
+
     </application>
 
 </manifest>

@@ -12,9 +12,7 @@ import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-
 import java.util.ArrayList;
-
 
 /**
  * TODO: document your custom view class.
@@ -44,7 +42,7 @@ public class DrawView extends View {
         setSaveEnabled(true);
         drawPaint.setAntiAlias(true);
         drawPaint.setStrokeWidth(10f);
-        drawPaint.setColor(Color.GREEN);
+        drawPaint.setColor(Color.BLACK);
         drawPaint.setStyle(Paint.Style.STROKE);
         drawPaint.setStrokeJoin(Paint.Join.ROUND);
         canvasPaint = new Paint(Paint.DITHER_FLAG);
@@ -68,7 +66,6 @@ public class DrawView extends View {
     public void changeColor(int color) {
         invalidate();
        drawPaint.setColor(color);
-
     }
 
     @Override
@@ -111,7 +108,6 @@ public class DrawView extends View {
         return true;
     }
 
-
     private void init(AttributeSet attrs, int defStyle) {
         // Load attributes
         final TypedArray a = getContext().obtainStyledAttributes(
@@ -153,6 +149,4 @@ public class DrawView extends View {
         Paint.FontMetrics fontMetrics = mTextPaint.getFontMetrics();
         mTextHeight = fontMetrics.bottom;
     }
-
-
 }
