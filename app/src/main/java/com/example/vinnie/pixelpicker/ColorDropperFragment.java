@@ -102,6 +102,9 @@ public class ColorDropperFragment extends Fragment implements View.OnTouchListen
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        // Make sure swipe event does not interfere while drawing
+        v.getParent().requestDisallowInterceptTouchEvent(true);
+
         int eventX = (int) event.getX();
         int eventY = (int) event.getY();
 

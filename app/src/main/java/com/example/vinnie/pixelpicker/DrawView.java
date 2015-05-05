@@ -83,7 +83,10 @@ public class DrawView extends View {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        // Get the coordinates of the touch event.
+        // Make sure swipe event does not interfere while drawing
+        getParent().requestDisallowInterceptTouchEvent(true);
+
+        // Get the coordinates of the touch event
         float eventX = event.getX();
         float eventY = event.getY();
 
