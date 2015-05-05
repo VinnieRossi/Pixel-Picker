@@ -83,6 +83,7 @@ public class LayoutGeneratorFragment extends Fragment implements View.OnLongClic
 
     public void changeColors(String hex) {
         layout.setBackgroundColor(Color.parseColor(hex));
+        tl = tr = bl = br = 0;
         getScheme(hex);
     }
 
